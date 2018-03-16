@@ -11,27 +11,23 @@ def armar_dic(path) :
 
 def actualizar_archivo(path, dic) :
 	archivo = open(path,"r+")
-	archivo.readlines()
-	tam_linea = archivo.tell()					# Guardo el tamaño de un registro para luego poder retroceder en el archivo esa cantidad de bytes
-	archivo.seek(0,0)
+	pos = archivo.tell()
 	for linea in archivo.readlines() :
+		tam_linea = archivo.tell() - pos
 		linea = linea[:-1]
-		lista = linea.split("|") 				# Me armo una pequeña lista en cada iteracion por cada empleado con sus datos como elementos de la lista
-		aumento = dic.get(lista[1]) 			# Si el dni de la lista se encuentra en el dic me devuelve el porcentaje de aumento, sino me devuelve un objeto None
-		print aumento
+		lista = linea.split("|") 					# Me armo una pequenia lista en cada iteracion por cada empleado con sus datos como elementos de la lista
+		print lista
+		aumento = dic.get(lista[1]) 				# Si el dni de la lista se encuentra en el dic me devuelve el porcentaje de aumento, sino me devuelve un objeto None
 		if aumento == None :
-			continue  
-		print lista							# Si no esta el dni en el dic, sigo recorriendo el archivo salteandome las siguientes sentencias
-		"""aumento = float(aumento) / (100) + 1 	# Convierto en un flotante el porcentaje
-		para_atras = tam_linea * -1
-		print para_atras
-		archivo.seek(para_atras,1)
-		archivo.write(lista[0]+"|"+lista[1]+"|")
-		print lista[-1]
-		sueldo_actual = float(lista[-1]) * aumento
-		print sueldo_actual
-		archivo.write(str(sueldo_actual)+"\n")
-		archivo.seek(0,1)"""
+			archivo.write(lista[0]+"|"+lista[1]+"|"+lista[-1]+"\n")	# Si no esta el dni en el dic, sigo recorriendo el archivo salteandome las siguientes sentencias
+		else :
+			aumento = float(aumento) / (100) + 1 		# Convierto en un flotante el porcentaje
+			archivo.seek(tam_linea * -1,1)
+			archivo.write(lista[0]+"|"+lista[1]+"|") 	# Vuelvo a escribir el nombre, apellido y dni con los separadores 
+			sueldo_actual = float(lista[-1]) * aumento
+			archivo.write(str(sueldo_actual)+"\n")		# Actualizo sueldo
+		pos = archivo.tell()
+		
 
 path_lista = "C:/Users/folivera/workspace/test/Python/lista_empleados.txt"
 path_aumentos = "C:/Users/folivera/workspace/test/Python/empleados_aumento.txt"

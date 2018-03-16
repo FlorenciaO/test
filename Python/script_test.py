@@ -9,29 +9,41 @@ def armar_dic(path) :
 	archivo.close()
 	return dic
 
-def actualizar_archivo(path, dic) :
-	archivo = open(path,"r+")
-	pos = archivo.tell()
-	for linea in archivo.readlines() :
-		procesar_linea(archivo, linea, dic, pos)
-		pos = archivo.tell()
+def actualizar_archivo(path, dic_aumentos) :
+	lista_emp = crear_lista(path)
+	actualizar_lista(dic_aumentos, lista_emp)
+	sobreescribir_archivo(path, lista_emp)
 
-def procesar_linea(archivo, linea, dic, pos):
-	tam_linea = archivo.tell() - pos
+def crear_lista(path) :
+	archivo = open(path,"r")
+	lista = []
+	for linea in archivo.readlines() :
+		procesar_linea(archivo, linea, lista)
+	archivo.close()
+	return lista
+
+def procesar_linea(archivo, linea, lista) :
 	linea = linea[:-1]
-	lista = linea.split("|") 				# Me armo una pequenia lista en cada iteracion por cada empleado con sus datos como elementos de la lista
-	aumento = dic.get(lista[1]) 			# Si el dni de la lista se encuentra en el dic me devuelve el porcentaje de aumento, sino me devuelve un objeto None
-	if aumento == None :
-		archivo.write(lista[0]+"|"+lista[1]+"|"+lista[-1]+"\n")	# Si no esta el dni en el dic, escribo con la misma informacion obtenida
-	else :
-		aumento = float(aumento) / (100) + 1 	# Convierto en un flotante el porcentaje
-		archivo.seek(tam_linea * -1,1)
-		archivo.write(lista[0]+"|"+lista[1]+"|")
-		sueldo_actual = float(lista[-1]) * aumento
-		archivo.write(str(sueldo_actual)+"\n")
+	sublista = linea.split("|")
+	lista.append(sublista)
+
+def actualizar_lista(dic_aum, lista) :
+	for x in range(len(lista)) :
+		aumento = dic_aum.get(lista[x][1])
+		if aumento != None :
+			sueldo_actual = float(lista[x][-1]) * ( float(aumento) / 100 + 1 )
+			print sueldo_actual
+			lista[x][-1] = str(sueldo_actual)
+
+def sobreescribir_archivo(path, lista) :
+	archivo = open(path, "w")
+	for elementos in lista :
+		linea = elementos[0]+"|"+elementos[1]+"|"+elementos[-1]+"\n"
+		archivo.write(linea)
+	archivo.close()
+
 
 path_lista = "lista_empleados.txt"
 path_aumentos = "empleados_aumento.txt"
 dic_aumentos = armar_dic(path_aumentos)
-print dic_aumentos
 actualizar_archivo(path_lista, dic_aumentos)

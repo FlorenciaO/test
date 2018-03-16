@@ -1,8 +1,8 @@
-Martin Parra|40012233|34277.34375
-Florencia Olivera|41262196|65137.5
+Martin Parra|40012233|10311
+Florencia Olivera|41262196|16488
 Joaquin Medina|16532498|23650
-Juana Ruiz Diaz|30856946|47745.6
-Alberto Olivera|16407398|46501.0875
+Juana Ruiz Diaz|30856946|13370
+Alberto Olivera|16407398|21663
 Sergio Blanco|18906523|19630
 Natalia Lopez|29674583|25100
-Brandon Calosso|23654821|31223.56375
+Brandon Calosso|23654821|89136

@@ -13,14 +13,14 @@ def actualizar_archivo(path, dic) :
 	print dic
 	archivo = open(path,"r+")
 	archivo.readlines()
-	tam_linea = archivo.tell()					# Guardo el tamaño de un registro para luego poder retroceder en el archivo esa cantidad de bytes
+	tam_linea = archivo.tell()					# Guardo el tamanio de un registro para luego poder retroceder en el archivo esa cantidad de bytes
 	archivo.seek(0,0)
 	for linea in archivo.readlines() :
 		procesar_linea(archivo, tam_linea, linea, dic)
 
 def procesar_linea(archivo, tam_linea, linea, dic):
 	linea = linea[:-1]
-	lista = linea.split("|") 				# Me armo una pequeña lista en cada iteracion por cada empleado con sus datos como elementos de la lista
+	lista = linea.split("|") 				# Me armo una pequenia lista en cada iteracion por cada empleado con sus datos como elementos de la lista
 	aumento = dic.get(lista[1]) 			# Si el dni de la lista se encuentra en el dic me devuelve el porcentaje de aumento, sino me devuelve un objeto None
 	print aumento
 	if aumento == None :
